@@ -1,0 +1,28 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Helper function to check if user is admin
+    function isAdmin() {
+      return request.auth != null && 
+             firestore.get(/databases/(default)/documents/user_roles/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // Logos bucket - only admins can upload
+    match /logos/{filename} {
+      allow read: if true; // Public read
+      allow write: if isAdmin();
+    }
+    
+    // Hero images bucket - only admins can upload
+    match /hero-images/{filename} {
+      allow read: if true; // Public read
+      allow write: if isAdmin();
+    }
+    
+    // Default: deny all other access
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

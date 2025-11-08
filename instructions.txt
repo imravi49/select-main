@@ -1,0 +1,35 @@
+
+FINAL SETUP & DEPLOY
+
+1) Install deps
+   npm install
+   (cd functions && npm install)
+
+2) Local dev (optional)
+   npm run dev
+
+3) Set Firebase project
+   firebase use selector-0219c
+
+4) Deploy security rules
+   firebase deploy --only firestore:rules,storage:rules
+
+5) Deploy cloud functions
+   firebase deploy --only functions
+
+6) Deploy hosting (if using Firebase Hosting)
+   npm run build
+   firebase deploy --only hosting
+
+GOOGLE DRIVE OAUTH
+- Connect a user via your existing "Connect Drive" flow to generate and save refresh_token.
+- Only after a user has connected Drive, the "Sync Drive" button will work.
+
+ADMIN DELETE (callable)
+- Admin-only deletion via callable deleteUserAndData.
+- Requires user_roles/{adminUid}.role == "admin".
+
+Data shape notes
+- feedback: flat collection (createdAt, message, userId)
+- activity_logs: flat collection (type, user_id, timestamp, ...)
+
