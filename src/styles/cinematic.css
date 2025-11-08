@@ -1,0 +1,152 @@
+
+
+/* === Cinematic Reveal with Gold Glow === */
+.cinematic-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  z-index: 9999;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.cinematic-inner {
+  position: relative;
+  text-align: center;
+  pointer-events: none;
+}
+
+.cinematic-glow::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 220%;
+  height: 220%;
+  background: radial-gradient(circle, rgba(230, 201, 108, 0.15) 0%, transparent 70%);
+  animation: glowPulse 3.5s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    opacity: 0.25;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+.cinematic-logo {
+  position: relative;
+  z-index: 2;
+  max-width: 60vmin;
+  max-height: 60vmin;
+  width: auto;
+  height: auto;
+  animation: cinematicReveal 3.5s ease forwards;
+  will-change: transform, opacity, filter;
+  filter: drop-shadow(0 8px 20px rgba(0,0,0,0.7));
+}
+
+@keyframes cinematicReveal {
+  0% { opacity: 0; transform: scale(1.05); filter: blur(8px); }
+  60% { opacity: 1; transform: scale(1); filter: blur(0); }
+  100% { opacity: 0; }
+}
+
+.cinematic-fadeout {
+  transition: opacity .5s ease;
+  opacity: 0 !important;
+}
+
+.cinematic-text {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 6vmin;
+  color: #e6c96c;
+  text-shadow: 0 6px 18px rgba(230,201,108,0.2);
+}
+/* === Cinematic Gold Glass Auth Box === */
+.auth-bg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 100vh;
+  background: radial-gradient(circle at 50% -20%, rgba(230, 201, 108, 0.12), transparent 70%), #000;
+  padding: 2rem 1rem;
+}
+
+.auth-card {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  box-shadow:
+    0 0 40px rgba(230, 201, 108, 0.08),
+    inset 0 0 20px rgba(255, 255, 255, 0.03);
+  padding: 2.5rem 2rem;
+  width: 90%;
+  max-width: 400px;
+  transition: all 0.4s ease;
+}
+
+.auth-card:hover {
+  box-shadow:
+    0 0 60px rgba(230, 201, 108, 0.12),
+    inset 0 0 25px rgba(255, 255, 255, 0.05);
+}
+
+.auth-card input {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.auth-card input:focus {
+  border-color: rgba(230, 201, 108, 0.3);
+  outline: none;
+}
+
+.auth-card button {
+  border-radius: 12px;
+}
+
+.auth-bg img {
+  margin-bottom: 2rem;
+  max-width: 180px;
+  height: auto;
+}
+
+@media (max-width: 640px) {
+  .auth-card {
+    padding: 2rem 1.5rem;
+  }
+  .auth-bg img {
+    max-width: 140px;
+  }
+}
+/* === Mobile Sharpness Fix for Cinematic Logo === */
+@media (max-width: 768px) {
+  .cinematic-logo {
+    /* Reduce the initial blur and disable GPU scaling distortion on mobile */
+    filter: blur(4px);
+    transform: scale(1.02);
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    will-change: opacity, transform;
+  }
+
+  @keyframes cinematicReveal {
+    0% { opacity: 0; transform: scale(1.02); filter: blur(4px); }
+    60% { opacity: 1; transform: scale(1); filter: blur(0); }
+    100% { opacity: 0; }
+  }
+}
